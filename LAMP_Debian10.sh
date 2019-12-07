@@ -90,7 +90,10 @@ a2dissite 000-default.conf
 systemctl reload apache2
 
 # Install Certbot for Let's Encrypt certificate management
-apt-get install certbot python-certbot-apache
+apt-get install -y certbot python-certbot-apache
+
+# Install Composer
+apt-get install -y composer
 
 # Install MySQL Server in a Non-Interactive mode. Default root password will be "root"
 echo "mysql-server mysql-server/root_password password $DBPASS" | sudo debconf-set-selections
@@ -102,7 +105,7 @@ mysql -uroot -p$DBPASS -e "create database $DBNAME"
 service mysql restart
 
 # Install php
-apt install -y php libapache2-mod-php php-mysql
+apt install -y php libapache2-mod-php php-mysql php-pear php-zip php-curl php-xmlrpc php-gd php-mbstring php-xml
 
 # Enable index.php
 sed -ie "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml indem/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf
