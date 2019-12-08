@@ -20,12 +20,11 @@ apt-get -o Acquire::ForceIPv4=true update -y
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 apt-get -o Acquire::ForceIPv4=true update -y
 
-# Add NEWUSER and append to sudoer file
+# Add NEWUSER and add to sudoers
 apt-get -y install sudo
 adduser $NEWUSER --disabled-password --gecos "" && \
 	echo "$NEWUSER:$NEWPASSWORD" | chpasswd
 usermod -aG sudo $NEWUSER
-# echo "$NEWUSER  ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 SSHDIR="/home/$NEWUSER/.ssh"
 mkdir $SSHDIR && echo "$SSHKEY" >> $SSHDIR/authorized_keys
@@ -33,7 +32,7 @@ chmod -R 700 $SSHDIR && chmod 600 $SSHDIR/authorized_keys
 chown -R $NEWUSER:$NEWUSER $SSHDIR
 
 # Set NEWHOSTNAME
-NEWHOSTNAMEctl set-hostname $NEWHOSTNAME
+hostnamectl set-hostname $NEWHOSTNAME
 echo "127.0.0.1   $NEWHOSTNAME" >> /etc/hosts
 
 
@@ -109,8 +108,7 @@ apt-get install -y composer
 
 # Install MySQL Server in a Non-Interactive mode. Default root password will be "root"
 apt-get install -y default-mysql-server
-systemctl start mariadb
-systemctl enable mariadb
+systemctl enable mariadb.service
 mysql_secure_installation <<EOF
 y
 $DBPASS
