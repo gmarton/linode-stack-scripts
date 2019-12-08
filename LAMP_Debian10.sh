@@ -111,6 +111,7 @@ apt-get install -y default-mysql-server
 systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation <<EOF
+
 y
 $DBPASS
 $DBPASS
