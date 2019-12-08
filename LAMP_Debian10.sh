@@ -108,7 +108,8 @@ apt-get install -y composer
 
 # Install MySQL Server in a Non-Interactive mode. Default root password will be "root"
 apt-get install -y default-mysql-server
-systemctl enable mariadb.service
+systemctl start mariadb
+systemctl enable mariadb
 mysql_secure_installation <<EOF
 y
 $DBPASS
